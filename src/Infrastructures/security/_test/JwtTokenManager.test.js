@@ -1,7 +1,6 @@
 const Jwt = require('@hapi/jwt');
 const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const JwtTokenManager = require('../JwtTokenManager');
-const config = require('../../../Commons/config');
 
 describe('JwtTokenManager', () => {
   describe('createAccessToken function', () => {
@@ -19,7 +18,7 @@ describe('JwtTokenManager', () => {
       const accessToken = await jwtTokenManager.createAccessToken(payload);
 
       // Assert
-      expect(mockJwtToken.generate).toBeCalledWith(payload, config.auth.accessTokenKey);
+      expect(mockJwtToken.generate).toHaveBeenCalledWith(payload, process.env.ACCESS_TOKEN_KEY);
       expect(accessToken).toEqual('mock_token');
     });
   });
@@ -39,7 +38,7 @@ describe('JwtTokenManager', () => {
       const refreshToken = await jwtTokenManager.createRefreshToken(payload);
 
       // Assert
-      expect(mockJwtToken.generate).toBeCalledWith(payload, config.auth.refreshTokenKey);
+      expect(mockJwtToken.generate).toHaveBeenCalledWith(payload, process.env.REFRESH_TOKEN_KEY);
       expect(refreshToken).toEqual('mock_token');
     });
   });
