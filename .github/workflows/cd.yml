@@ -18,25 +18,8 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          mkdir -p ~/apps
-          cd ~/apps
-          
-          if [ ! -d "auth-api" ]; then
-            git clone git@github.com:namauser/auth-api.git
-          fi
-          
-          cd auth-api
-          git reset --hard HEAD
-          git clean -fd
-          git pull origin main --rebase
-
-          echo "${ENV_FILE}" > .env
-          echo "${ENV_TEST_FILE}" > .env.test
-
+          cd ~/auth-api
+          git pull origin master
           npm install
           npm run migrate up
           pm2 restart auth-api
-
-      env:
-        ENV_FILE: ${{ secrets.ENV_FILE }}
-        ENV_TEST_FILE: ${{ secrets.ENV_TEST_FILE }}
