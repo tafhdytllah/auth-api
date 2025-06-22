@@ -1,4 +1,4 @@
-const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
+const UsersTableTestHelper = require('../../../../Tests/UsersTableTestHelper');
 const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const RegisterUser = require('../../../Domains/users/entities/RegisterUser');
 const RegisteredUser = require('../../../Domains/users/entities/RegisteredUser');
@@ -21,7 +21,7 @@ describe('UserRepositoryPostgres', () => {
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).rejects.toThrowError(InvariantError);
+      await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).rejects.toThrow(InvariantError);
     });
 
     it('should not throw InvariantError when username available', async () => {
@@ -29,7 +29,7 @@ describe('UserRepositoryPostgres', () => {
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).resolves.not.toThrowError(InvariantError);
+      await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).resolves.not.toThrow(InvariantError);
     });
   });
 
@@ -82,7 +82,7 @@ describe('UserRepositoryPostgres', () => {
       // Action & Assert
       return expect(userRepositoryPostgres.getPasswordByUsername('dicoding'))
         .rejects
-        .toThrowError(InvariantError);
+        .toThrow(InvariantError);
     });
 
     it('should return username password when user is found', async () => {

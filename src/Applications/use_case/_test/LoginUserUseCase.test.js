@@ -47,14 +47,14 @@ describe('GetAuthenticationUseCase', () => {
     // Assert
     expect(actualAuthentication).toEqual(expectedAuthentication);
     expect(mockUserRepository.getPasswordByUsername)
-      .toBeCalledWith('dicoding');
+      .toHaveBeenCalledWith('dicoding');
     expect(mockPasswordHash.compare)
-      .toBeCalledWith('secret', 'encrypted_password');
+      .toHaveBeenCalledWith('secret', 'encrypted_password');
     expect(mockAuthenticationTokenManager.createAccessToken)
-      .toBeCalledWith({ username: 'dicoding' });
+      .toHaveBeenCalledWith({ username: 'dicoding' });
     expect(mockAuthenticationTokenManager.createRefreshToken)
-      .toBeCalledWith({ username: 'dicoding' });
+      .toHaveBeenCalledWith({ username: 'dicoding' });
     expect(mockAuthenticationRepository.addToken)
-      .toBeCalledWith(expectedAuthentication.refreshToken);
+      .toHaveBeenCalledWith(expectedAuthentication.refreshToken);
   });
 });
