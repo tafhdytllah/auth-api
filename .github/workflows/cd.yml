@@ -1,16 +1,16 @@
 name: Continuous Deployment
- 
+
 on: 
   push:
     branches:
       - main
- 
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
- 
+
     steps:
-    - name: SSH and deploy app
+    - name: Deploy via SSH
       uses: appleboy/ssh-action@v0.1.10
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -18,11 +18,25 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          set -e
-          cd ~/apps/auth-api
+          mkdir -p ~/apps
+          cd ~/apps
+          
+          if [ ! -d "auth-api" ]; then
+            git clone git@github.com:namauser/auth-api.git
+          fi
+          
+          cd auth-api
           git reset --hard HEAD
           git clean -fd
           git pull origin main --rebase
+
+          echo "${ENV_FILE}" > .env
+          echo "${ENV_TEST_FILE}" > .env.test
+
           npm install
           npm run migrate up
           pm2 restart auth-api
+
+      env:
+        ENV_FILE: ${{ secrets.ENV_FILE }}
+        ENV_TEST_FILE: ${{ secrets.ENV_TEST_FILE }}
