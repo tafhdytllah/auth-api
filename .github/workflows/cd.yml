@@ -22,8 +22,12 @@ jobs:
           export NVM_DIR="$HOME/.nvm"
           source "$NVM_DIR/nvm.sh"
           nvm use default
-          
+
           git pull origin main
           npm install
           npm run migrate up
-          pm2 restart auth-api
+          if pm2 list | grep -q "auth-api"; then
+            pm2 restart auth-api
+          else
+            pm2 start npm --name "auth-api" -- run start
+          fi
