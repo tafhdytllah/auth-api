@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Deploy via SSH
-      uses: appleboy/ssh-action@v0.1.10
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
@@ -19,6 +19,10 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd ~/auth-api
+          export NVM_DIR="$HOME/.nvm"
+          source "$NVM_DIR/nvm.sh"
+          nvm use default
+          
           git pull origin main
           npm install
           npm run migrate up
